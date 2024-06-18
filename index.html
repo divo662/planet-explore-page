@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="UTF-8">
+        <title>BluePlanet</title>
+        <link rel="stylesheet" href="style.css">
+        <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <body>
+        <header>
+            <nav>
+                <h3>BluePlanet</h3>
+                <div class="nav_links" id="navLinks">
+                    <i class="fa fa-times menu_close" onclick="hideMenu()"></i>
+                    <ul>
+                        <li><a href="">Latest Articles</a></li>
+                        <li><a href="">Photo of the Day</a></li>
+                        <li><a href="">Video Channel</a></li>
+                    </ul>
+                </div>
+    
+                <div class="nav_action">
+                    <ul>
+                        <li><a href="">Subscribe</a></li>
+                        <i class="ri-search-2-line"></i>
+                        <i class="ri-menu-line" onclick="showMenu()"></i>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div class="carousel">
+            <div class="card-container">
+                <div class="card">
+                    <img src="asset/img/cave.jpg" alt="Cave">
+                    <div class="layer">
+                        <h3>Underwater Cave</h3>
+                    </div>
+                </div>
+                <div class="card"><img src="asset/img/forest.jpg" alt="">
+                    <div class="layer">
+                        <h3>Rain Forest</h3>
+                    </div>
+                </div>
+                <div class="card"><img src="asset/img/underwater.jpg" alt="">
+                    <div class="layer">
+                        <h3>Ocean</h3>
+                    </div>
+                </div>
+                <div class="card"><img src="asset/img/val3.jpg" alt="">
+                    <div class="layer">
+                        <h3>Valcano</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var navLinks = document.getElementById("navLinks");
+        
+            function showMenu() {
+                navLinks.style.right = "0";
+            }
+        
+            function hideMenu() {
+                navLinks.style.right = "-300px";
+            }
+        
+            // Set initial state of the menu
+            navLinks.style.right = "-300px";
+        
+            const listOfCardElements = document.querySelectorAll('.card');
+            const cardContainer = document.querySelector('.card-container');
+            let currentCard = 0;
+        
+            listOfCardElements.forEach((cardElement, index) => {
+  cardElement.addEventListener('click', () => {
+    currentCard = index;
+    const title = cardElement.querySelector('.layer h3').textContent;
+    const description = "This is a detailed description of " + title;
+    const imageUrl = cardElement.querySelector('img').src;
+  });
+});
+    
+            let isDragging = false;
+            let startX = 0;
+            let scrollLeft = 0;
+        
+            function handleDrag(event) {
+                if (!isDragging) return;
+                event.preventDefault();
+        
+                const currentX = event.pageX || event.touches[0].pageX;
+                const walk = (currentX - startX) * 2; // Adjust scroll speed
+                cardContainer.scrollLeft = scrollLeft - walk;
+            }
+        
+            cardContainer.addEventListener('mousedown', (event) => {
+                isDragging = true;
+                startX = event.pageX - cardContainer.offsetLeft;
+                scrollLeft = cardContainer.scrollLeft;
+                cardContainer.addEventListener('mousemove', handleDrag);
+            });
+        
+            cardContainer.addEventListener('mouseup', () => {
+                isDragging = false;
+                cardContainer.removeEventListener('mousemove', handleDrag);
+            });
+        
+            cardContainer.addEventListener('mouseleave', () => {
+                isDragging = false;
+                cardContainer.removeEventListener('mousemove', handleDrag);
+            });
+        
+            cardContainer.addEventListener('touchstart', (event) => {
+                isDragging = true;
+                startX = event.touches[0].pageX - cardContainer.offsetLeft;
+                scrollLeft = cardContainer.scrollLeft;
+                cardContainer.addEventListener('touchmove', handleDrag);
+            });
+        
+            cardContainer.addEventListener('touchend', () => {
+                isDragging = false;
+                cardContainer.removeEventListener('touchmove', handleDrag);
+            });
+        
+            document.addEventListener('DOMContentLoaded', () => {
+                cardContainer.scrollLeft = cardContainer.offsetWidth / 2;
+            });
+        </script>
+        
+    </body>
+</html>
